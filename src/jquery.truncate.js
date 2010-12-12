@@ -19,18 +19,14 @@
     }
 
     return this.each(function(i, el) {
-      var el = $(el);
-      var htmlRegex = /<\/?[^<>]*\/?>/gi;
-      var origStr = $.trim($(el).html());
-      var str = origStr.split(htmlRegex).join(' ');
+      var el = $(el),
+          htmlRegex = /<\/?[^<>]*\/?>/gi,
+          origStr = $.trim($(el).html()),
+          str = origStr.split(htmlRegex).join(' ');
       if(str.length < length)
         return;
-      var truncateAt = length;
-      var tags = {};
-      var match = null;
-      var end = origStr.length;
-      var classes = $(el).attr('class') || 'truncate';
-      var wrap = $(el).wrap('<div></div>').attr('class', '').parent().attr('class', classes);
+      var truncateAt = length, tags = {}, match = null, end = origStr.length, classes = $(el).attr('class') || 'truncate', 
+          wrap = $(el).wrap('<div></div>').attr('class', '').parent().attr('class', classes);
       if(str.charCodeAt(truncateAt) != 32)
         truncateAt = truncateAt + str.substring(truncateAt).indexOf(' ');
       var truncated = str.substring(0, truncateAt);
