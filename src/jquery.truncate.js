@@ -19,10 +19,10 @@
     }
 
     return this.each(function(i, el) {
-      var el = $(el),
-          htmlRegex = /<\/?[^<>]*\/?>/gi,
+      el = $(el);
+      var htmlRegex = /<\/?[^<>]*\/?>/gi,
           origStr = $.trim($(el).html()),
-          str = origStr.split(htmlRegex).join(' ');
+          str = origStr.split(htmlRegex).join('');
       if(str.length < length)
         return;
       var truncateAt = length, tags = {}, match = null, end = origStr.length, classes = $(el).attr('class') || 'truncate', 
@@ -30,24 +30,25 @@
       if(str.charCodeAt(truncateAt) != 32)
         truncateAt = truncateAt + str.substring(truncateAt).indexOf(' ');
       var truncated = str.substring(0, truncateAt);
-      while ((match = htmlRegex.exec(origStr)) != null)
+      while ((match = htmlRegex.exec(origStr)) !== null){
         tags[match.index] = match[0];
+      }
 
-      for(var i in tags) {
-        truncated = [truncated.substring(0, i), tags[i], truncated.substring(i)].join('');
-      };
+      for(var tag in tags) {
+        truncated = [truncated.substring(0, tag), tags[tag], truncated.substring(tag)].join('');
+      }
 
       truncated = stripEmptyTags(truncated).replace(/(<\/\w+>)?$/, options.elipsis + '$1');
 
       $(el).clone().addClass('more').appendTo(wrap).hide().parent().append(moreLessLink());
-      $(el).addClass('less').html(truncated).parent()
-      .find('.more_less')
-      .click(function(e) {
+      $(el).addClass('less').html(truncated).parent().
+      find('.more_less').
+      click(function(e) {
         e.preventDefault();
         $('.more, .less', wrap).toggle();
-        $(this).update($('.more', wrap).is(':visible') ? options.less : options.more);
+        $(this).html($('.more', wrap).is(':visible') ? options.less : options.more);
       });
     });
-  }
+  };
 })(jQuery);
 
