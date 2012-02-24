@@ -27,8 +27,12 @@
         return;
       var truncateAt = length, tags = {}, match = null, end = origStr.length, classes = $(el).attr('class') || 'truncate', 
           wrap = $(el).wrap('<div></div>').attr('class', '').parent().attr('class', classes);
-      if(str.charCodeAt(truncateAt) != 32)
+      if(str.charCodeAt(truncateAt) != 32) {
+        var nextSpaceIndex = str.substring(truncateAt).indexOf(' ');
+        if(nextSpaceIndex < 0)
+          return;
         truncateAt = truncateAt + str.substring(truncateAt).indexOf(' ');
+      }
       var truncated = str.substring(0, truncateAt);
       while ((match = htmlRegex.exec(origStr)) !== null){
         tags[match.index] = match[0];
