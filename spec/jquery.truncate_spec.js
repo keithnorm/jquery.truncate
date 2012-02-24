@@ -17,8 +17,8 @@ describe('$.fn.truncate', function() {
   });
 
   it('truncates text containing html to the specified value', function() {
-    var truncate = 9;
-    var tagsLength = $(nestedHtml).html().length - $(nestedHtml).html().replace(/<\/?[^<>]*\/?>/gi, '').length;
+    var truncate = 8;
+    var tagsLength = $(nestedHtml).html().match(/<\/?[^<>]*\/?>/gi).join('').length;
     expect($(nestedHtml).truncate(truncate).html().length).toEqual(truncate + tagsLength);
   });
 
@@ -43,5 +43,13 @@ describe('$.fn.truncate', function() {
 
   it('appends the classes of the element to the container', function() {
     expect($('<div class="stuff"><p>heyo</p></div>').truncate(2).parent().attr('class')).toEqual('stuff');
+  });
+
+  it("returns the full title without elipses if the title truncated to the next whole word is the original title", function() {
+      expect($("<p>Deal title with only 34 characters</p>").truncate(30).html()).toEqual("Deal title with only 34 characters");
+  });
+
+  it("returns a title truncated to the nearest next word with elipses if it is over the maximum title limit", function() {
+    expect($("<p>Deal title with only 34 characters</p>").truncate(19).html()).toEqual("Deal title with only...");
   });
 });
